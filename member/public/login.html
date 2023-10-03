@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 核心：Tocas UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.4/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.4/tocas.min.js"></script>
+
+    <!-- 字體：Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+
+</head>
+
+<style>
+    body {
+        background-color: #eec4c4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        /* 添加渐变背景 */
+        background-image: linear-gradient(to bottom right, #f9d0d0, 80%,#f5f5f5 );
+        background-size: cover;
+        background-position: center;
+    }
+
+    .ts-out-segement {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 65%;
+        width: 45%;
+        margin: 0;
+        flex-direction: column;
+        background-color: #fbd7d7;
+        /* 添加渐变背景 */
+        background-image: linear-gradient(to bottom right, #fbd7d7, 80%,#f5f5f5);
+        background-size: cover;
+        background-position: center;
+    }
+
+    .ts-warp-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .ts-wrap.is-vertical {
+        margin-left: 100px; /* 向右移動的數值，可以調整此數值 */
+    }
+    
+    .ts-text.is-label {
+        font-weight: 500;
+        color: var(--ts-gray-800);
+        font-size: 30px;
+        line-height: 1;
+    }
+
+    .ts-text.is-required::after {
+        font-size: 20px;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 10px; /* 控制按钮之间的间隔 */
+        margin-top: 10px; /* 可根据需要调整上方间距 */
+    }
+</style>
+
+<body>
+    <div class="ts-center">
+        <div class="ts-out-segement">
+            <div class="ts-segment is-very-elevated" style="width: 90%; height: 90%;">
+                <div style="text-align:center; font-size:30px;"><h1>XXXXXXX</h1></div>
+                <div style="height:50px"></div>
+                <div class="ts-warp-container">
+                    <div class="ts-wrap is-vertical">
+                        <div class="ts-text is-label">使用者帳號</div>
+                        <div id="account" class="ts-input is-start-icon">
+                            <span class="ts-icon is-user-icon"></span>
+                            <input  type="text" style="width:200px"/>
+                            <span class="ts-text is-required"></span>
+                        </div>
+                        <div class="ts-text is-label">密碼</div>
+                        <div id="password" class="ts-input is-start-icon">
+                            <span class="ts-icon is-lock-icon"></span>
+                            <input type="password" style="width:200px"/>
+                            <span class="ts-text is-required"></span>
+                        </div>
+                        <div class="button-container">
+                            <button id="signUpBtn" class="ts-button is-fluid" style="width:100px">註冊</button>
+                            <button id="loginBtn" class="ts-button is-fluid" style="width:100px">登入</button>
+                        </div>
+                        
+                    </div>
+                    <div style="width:100px"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const signUpBtn = document.getElementById('signUpBtn');
+    signUpBtn.addEventListener('click', async function() {
+        window.location.href = 'signUp.html';
+    });
+
+
+
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.addEventListener('click', async function() {
+        const username = document.querySelector('input[type="text"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+
+        // 這裡使用 fetch 或其他方式將帳號密碼傳給後端進行驗證
+        // 假設後端回傳 Session ID 為 sessionId
+        // 請將以下 fetch 的 URL 替換為後端的驗證 API
+        /*your_backend_validation_api為後端提供的實際 API 路徑，
+        並且該 API 負責接收前端傳送的帳號密碼，進行驗證並返回 Session ID*/
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        })
+        .then(response=>{
+            if (response.ok) {
+                // 获取响应头部信息
+                const headers = response.headers;
+                // 使用 get() 方法来获取特定的响应头字段的值
+                const token = headers.get('token');
+
+                sessionStorage.setItem('yourtoken', token);
+                sessionStorage.setItem('yourName', username);
+
+                return response.json(); // 解析 JSON 数据
+            }
+            else{
+                throw new Error(' ');
+            }
+        })
+        .then(data => {
+
+            // 使用 data 对象进行操作，例如访问其中的属性
+            const status = data.status;
+
+            // 打印响应头字段的值
+            if(status == 'fail')
+                console.log("fail");
+            else
+                window.location.href = 'home.html';
+        })
+        .catch(error => {
+            // 捕获并处理请求或解析 JSON 数据时的错误
+            console.error('Error:', error);
+        });
+    });
+</script>
+</html>

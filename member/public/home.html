@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="CSS/reset.css">
+    <link rel="stylesheet" href="CSS/sidebar.css">
+    <link rel="stylesheet" href="CSS/form.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
+    <script src="Javascript/data.js"></script>
+    <script src="Javascript/login_verify.js"></script>
+    <script src="Javascript/form.js"></script>
+    <script src="Javascript/shareoutDate.js"></script>
+
+    <!-- 核心：Tocas UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.4/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.4/tocas.min.js"></script>
+
+    <!-- 字體：Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+
+<style>
+    body {
+        background-color: #eec4c4;
+        height: 1229px; /* 設置內容的高度為視窗高度 */
+    }
+    
+    header {
+        background-color: #c42a2a;
+        border-bottom: #fff;
+        height: 530px;
+    }
+
+    .ts-tab{
+        line-height: 100px;
+        font-size: 30px;
+    }
+
+    .first {
+        background-color: #c42a2a;
+    }
+
+    .background_img {
+        position: absolute;
+        bottom: 0; 
+        left: 0; 
+        width: 100%;
+        height: 450px; /* 設定您想要的高度，可以隨意調整 */
+        background-image: url(bg.jpg);
+        background-position: center;
+        background-color: #E0964D;
+        background-repeat: no-repeat; 
+        background-size: contain; 
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+</style>
+
+<body>
+    <header>
+        <div class="ts-tab is-fluid">
+            <a class="item" onclick="toggleSidebar(event)">
+                <span class="ts-icon is-list-icon"></span>
+                項目
+            </a>
+            <a class="item" onclick="login()">
+                <span class="ts-icon is-chart-line-icon"></span>
+                <span class="login_state">登入</span>
+            </a>
+            <a class="item">
+                <span class="ts-icon is-scroll-icon"></span>
+                首頁
+            </a>
+            <a class="item">
+                <span class="ts-icon is-scroll-icon"></span>
+                聯絡我們
+            </a>
+        </div>
+        <div class="background_img"></div>
+    </header>
+    
+    <div class="sidebar" >
+        <table>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
+    <!--主要表單，初始為隱藏狀態-->
+    <section class="form">    
+        <div class="form-container">
+            <form id="UserData">
+                <label for="gender">性別：</label>
+                <select id="gender" name="gender">
+                    <option value="male">男性</option>
+                    <option value="female">女性</option>
+                    <option value="other">其他</option>
+                </select>
+
+                <label>興趣：</label>
+                <div class="interest-buttons">
+                    <button type="button" value="reading" onclick="click_entertainment(event)">室內娛樂</button>
+                    <button type="button" value="sports" onclick="click_sports(event)">戶外運動</button>
+                    <button type="button" value="music" onclick="click_art(event)">藝術</button>
+                    <button type="button" value="travel" onclick="click_other(event)">其他興趣</button>
+                    <button type="button" value="travel" onclick="click_place(event)">喜好的旅遊地點</button>
+                </div>
+
+                <button type="submit" style="margin:50px 20px 0px 0px; background-color:chocolate" onclick="saveData(event)">提交</button>
+                <button type="submit" style="margin-top:50px; background-color:chocolate" onclick="cancelForm(event)">取消</button>
+            </form>
+        </div>
+        <button type="button" onclick="showFormContainer()" id="showForm">點擊這裡填寫資料 </button>
+    </section>
+    <!--次要表單，初始為隱藏狀態-->
+    <section class="_subForm">
+        <!-- 彈出的小表單 1-->
+        <div id="entertainmentForm" class="popup-form" style="display: none;">
+            <h2>請選擇：</h2>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="darts"/>
+                射飛鏢
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="boardgames"/>
+                桌上遊戲
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="cooking"/>
+                烹飪
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="chess"/>
+                西洋棋
+            </label>
+            <!-- 其他娛樂項目按鈕 -->
+        </div>
+        <!-- 彈出的小表單 2-->
+        <div id="sportsForm" class="popup-form" style="display: none;">
+            <h2>請選擇：</h2>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="yoga"/>
+                瑜珈
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="basketball"/>
+                籃球
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="baseball"/>
+                棒球
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="boxing"/>
+                拳擊
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="billiards"/>
+                撞球
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="climbing"/>
+                攀岩
+            </label>
+            <!-- 其他娛樂項目按鈕 -->
+        </div>
+        <!-- 彈出的小表單 3-->
+        <div id="artForm" class="popup-form" style="display: none;">
+            <h2>請選擇：</h2>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="drawing"/>
+                繪畫
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="calligraphy"/>
+                書法
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="writing"/>
+                閱讀/寫作
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="dancing"/>
+                舞蹈
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="crafts"/>
+                手工藝
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="drama"/>
+                戲劇欣賞
+            </label>
+            <!-- 其他娛樂項目按鈕 -->
+        </div>
+        <!-- 彈出的小表單 5-->
+        <div id="otherForm" class="popup-form" style="display: none;">
+            <h2>請選擇：</h2>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="driving"/>
+                兜風
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="debate"/>
+                辯論
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="cosplay"/>
+                cosplay
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="bridge"/>
+                橋牌
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="birdwatching"/>
+                賞鳥
+            </label>
+            <!-- 其他娛樂項目按鈕 -->
+        </div>
+        <!-- 彈出的小表單 4-->
+        <div id="placeForm" class="popup-form" style="display: none;">
+            <h2>請選擇：</h2>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="aquarium"/>
+                水族館
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="museum"/>
+                博物館
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="camping"/>
+                露營
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="beach"/>
+                沙灘
+            </label>
+            <label class="ts-checkbox">
+                <input type="checkbox" value="zoo"/>
+                動物園
+            </label>
+            <!-- 其他娛樂項目按鈕 -->
+        </div>
+    </section>
+    
+    <main>
+        <div class="container" style="margin-top: 30px;">
+            <img src="drinking water-pana.svg" style="width: 200px;" alt="">
+            <h1>熱愛隱私？ABY方式讓您安心！🔒</h1>
+            <p>歡迎來到本網站，我們深知保護您的個人資料是最重要的事情之一。為了確保您的隱私完全得到保障，我們採用最先進的ABY技術，讓您的個資像鑽石般堅不可摧！</p>
+            <h2>ABY技術的強大之處</h2>
+            <ul>
+                <li>1. 匿名加密 - 我們的ABY方式確保您的個人身份和敏感資料絕對匿名和加密。您的資料只會在必要時被使用，確保您的隱私一絲不苟。</li>
+                <li>2. 完善的安全措施 - 我們以最高標準來保護您的資料。所有數據傳輸都受到嚴格的保護，防止任何未授權的訪問或洩漏。</li>
+                <li>3. 興趣相似度測試 - 在正式交談前，讓我們為您提供一個興趣相似度測試。這個有趣的測試會幫助我們找到和您志同道合的人，不僅節省您的時間，也提高了交流的可能性。</li>
+            </ul>
+            <h2>與我們一起探索未知 🚀</h2>
+            <p>您不需擔心資料洩漏或侵犯隱私的問題，我們的ABY方式讓您在這個網站上放心探索。讓我們幫您找到志同道合的夥伴，無論是交友、聊天、還是共同愛好，這裡都有無限可能！</p>
+            <h3>立即開始，優雅地保護您的隱私，與心儀的人一同展開美妙的對話旅程吧！💡</h3>
+        </div>
+    </main>
+
+    <div id="loginFormContainer"></div>
+
+    <script>
+
+        /* begin   the code inside need to be active each update*/
+
+        // Get all <td> elements inside the sidebar
+        const tdElements = document.querySelectorAll('.sidebar td');
+
+        // Add event listener to each <td> element
+        tdElements.forEach(td => {
+            td.addEventListener('click', function() {
+                // Get the person's name from the clicked <td>
+                let tdContent = this.innerText.trim();
+                
+                personName = tdContent.replace('person', '').trim();
+
+                Swal.fire({
+                    icon: 'warning', // Set the icon type (info, success, warning, error)
+                    title: '你選中了:', // Set the title of the popup
+                    text: personName, // Set the content of the popup
+                    showCancelButton: true,
+                    confirmButtonText: '確定配對', // Set the text of the confirmation button
+                    confirmButtonColor: '#45A049',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: '取消配對',
+                }).then((result) => {
+                    if (!result.isConfirmed) {
+                        Swal.fire(
+                        '取消!',
+                        '你取消了配對',
+                        'success'
+                        )
+                    } else {
+                        Swal.fire(
+                        '你發送了配對請求!',
+                        '徵詢對方是否願意配對..',
+                        'success'
+                        )
+                    }
+                });
+            });
+        });
+
+        function toggleSidebar(e) {
+            /*querySelector回傳匹配class的第一個節點*/
+            const sidebar = document.querySelector('.sidebar')
+
+            if (sidebar.style.marginLeft === '' || sidebar.style.marginLeft === '-250px') {
+                e.target.style.backgroundColor = ""
+                sidebar.style.marginLeft = '0'
+            } else {
+                e.target.style.backgroundColor = "brown"
+                sidebar.style.marginLeft = '-250px'
+            }
+        }
+
+        let formData = []
+
+        // document.body的點擊事件處理程序=>用於隱藏次要表單subform
+        function bodyClickHandler(event) {
+            console.log('bodyClickHandler');
+            const _subForm = document.querySelector('._subForm');
+            // 檢查點擊的元素是否在_subForm內或是showForm按鈕，如果不是則隱藏_subForm
+            if (!_subForm.contains(event.target) && event.target.id !== 'showForm') {
+                hide_subForm();
+            }
+        }
+        //判斷當前的登入狀態
+        document.addEventListener('DOMContentLoaded', function() {
+        // 檢查 sessionStorage 中是否有 yourtoken
+            const token = sessionStorage.getItem('yourtoken');
+            const name = sessionStorage.getItem('yourName');
+            const accountIcon = document.querySelector('span.login_state');
+
+
+            if (token) {
+                // 已登入狀態，將文字設置為 "登入成功"
+                accountIcon.textContent = ' 登入成功 ';
+                const form = document.getElementsByClassName('form')[0];
+                form.style.display = 'block';
+
+                // 如果有 username 參數，將帳號名稱加入到 sidebar
+                fetch('/update', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'token': token
+                    }
+                })
+                .then(response => {
+                    // 检查 HTTP 响应状态码
+                    if (response.ok) {
+                    // 使用 .json() 方法解析 JSON 数据
+                        console.log('57');
+                        return response.json();
+                    } else {
+                    // 处理错误情况
+                        console.log('58');
+                        throw new Error('Failed to fetch data');
+                    }
+                })
+                .then(data => {
+                    console.log('60');
+                    // 在这里可以访问后端返回的 JSON 数据
+                    for (const item of data['member']) {
+                        add_user_into_sidebar(item);
+                    }
+                    
+                    // 这里可以进行后续操作，根据你的需求来处理数据
+                })
+                .catch(error => {
+                    console.log('61');
+                    // 捕获并处理请求或解析 JSON 数据时的错误
+                    console.error('Error:', error);
+                });
+                
+            } else {
+                // 未登入狀態，將文字設置為 "登入"
+                accountIcon.textContent = ' 登入 ';
+                const form = document.getElementsByClassName('form')[0];
+                form.style.display = 'none';
+                clear_sidebar_buttons();
+            }
+        });
+
+        function clear_sidebar_buttons() {
+            // 获取 sidebar 中的 table 元素
+            const sidebarTable = document.querySelector('.sidebar table');
+            
+            // 从 table 元素中删除所有子元素
+            while (sidebarTable.firstChild) {
+                sidebarTable.removeChild(sidebarTable.firstChild);
+            }
+        }
+    </script>
+</body>
+</html>
+

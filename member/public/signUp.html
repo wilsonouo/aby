@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 核心：Tocas UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.4/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/4.2.4/tocas.min.js"></script>
+
+    <!-- 字體：Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+
+</head>
+
+<style>
+    body {
+        background-color: #eec4c4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        /* 添加渐变背景 */
+        background-image: linear-gradient(to bottom right, #f9d0d0, 80%,#f5f5f5 );
+        background-size: cover;
+        background-position: center;
+    }
+
+    .ts-out-segement {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 65%;
+        width: 45%;
+        margin: 0;
+        flex-direction: column;
+        background-color: #fbd7d7;
+        /* 添加渐变背景 */
+        background-image: linear-gradient(to bottom right, #fbd7d7, 80%,#f5f5f5);
+        background-size: cover;
+        background-position: center;
+    }
+
+    .ts-warp-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .ts-wrap.is-vertical {
+        margin-left: 100px; /* 向右移動的數值，可以調整此數值 */
+    }
+    
+    .ts-text.is-label {
+        font-weight: 500;
+        color: var(--ts-gray-800);
+        font-size: 20px;
+        line-height: 1;
+    }
+
+    .ts-text.is-required::after {
+        font-size: 20px;
+    }
+
+    .button-container {
+        display: flex;
+        gap: 10px; /* 控制按钮之间的间隔 */
+        margin-top: 10px; /* 可根据需要调整上方间距 */
+    }
+</style>
+
+<body>
+    <div class="ts-center">
+        <div class="ts-out-segement">
+            <div class="ts-segment is-very-elevated" style="width: 90%; height: 90%;">
+                <div style="text-align:center; font-size:30px;"><h1>XXXXXXX</h1></div>
+                <div style="height:50px"></div>
+                <div class="ts-warp-container">
+                    <div class="ts-wrap is-vertical">
+                        <div class="ts-text is-label">請輸入帳號</div>
+                        <div id="account" class="ts-input is-start-icon">
+                            <span class="ts-icon is-user-icon"></span>
+                            <input  type="text" style="width:200px"/>
+                            <span class="ts-text is-required"></span>
+                        </div>
+                        <div class="ts-text is-label">請輸入密碼</div>
+                        <div id="password1" class="ts-input is-start-icon">
+                            <span class="ts-icon is-lock-icon"></span>
+                            <input id="passwordInput1" type="password" style="width:200px" />
+                            <span class="ts-text is-required"></span>
+                        </div>
+                        <div class="ts-text is-label">再次輸入密碼</div>
+                        <div id="password2" class="ts-input is-start-icon">
+                            <span class="ts-icon is-lock-icon"></span>
+                            <input id="passwordInput2" type="password" style="width:200px" />
+                            <span class="ts-text is-required"></span>
+                        </div>
+                        <div id="passwordMismatch"  style="color: red; display: none;">
+                            密碼不相符
+                        </div>
+                        <div class="button-container">
+                            <button id="cancelBtn" class="ts-button is-fluid" style="width:100px">取消註冊</button>
+                            <button id="registerBtn" class="ts-button is-fluid" style="width:100px">註冊</button>
+                        </div>
+                        
+                    </div>
+                    <div style="width:100px"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const registerBtn = document.getElementById('registerBtn');
+    const passwordMismatchMessage = document.getElementById('passwordMismatch');
+
+    // 監聽密碼輸入欄位的輸入事件
+    registerBtn.addEventListener('click', async() => {
+        const password1Input = document.getElementById('passwordInput1');
+        const password2Input = document.getElementById('passwordInput2');
+        const password1 = password1Input.value;
+        const password2 = password2Input.value;
+
+
+        // 檢查兩個密碼是否有任意為空
+        if (password1.trim() === '' || password2.trim() === ''){
+            // 將密碼欄位外框變紅"
+            if(password1.trim() === '')
+                password1Input.style.borderColor = 'red';
+            if(password2.trim() === '')
+                password2Input.style.borderColor = 'red';
+        }
+        // 檢查兩個密碼是否相同
+        else if (password1 !== password2) {
+            passwordMismatchMessage.style.display = 'block';
+            password2Input.style.borderColor = 'red';
+            console.log("fail");
+        }
+        else{
+            const username = document.querySelector('input[type="text"]').value;
+            const password = document.querySelector('input[type="password"]').value;
+
+            console.log("success");
+            
+            // 這裡使用 fetch 或其他方式將帳號密碼傳給後端進行驗證
+            // 假設後端回傳 Session ID 為 sessionId
+            // 請將以下 fetch 的 URL 替換為後端的驗證 API
+            /*your_backend_validation_api為後端提供的實際 API 路徑，
+            並且該 API 負責接收前端傳送的帳號密碼，進行驗證並返回 Session ID*/
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+            
+            window.location.href = 'login.html';
+        }
+    });
+</script>
+</html>
+

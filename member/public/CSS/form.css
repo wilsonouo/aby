@@ -1,0 +1,83 @@
+.form{
+    display: block;
+}
+
+.form-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+    transition: opacity 0.3s ease-in; /* Add a transition for the ease-in effect */
+    border: 2px solid #de8e8e; /* Add a 2px solid border with color #ccc */
+}
+
+
+.form-container label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-container input, .form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.form-container button {
+    background-color: brown;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.interest-buttons button.active {
+    background-color: #2fd62f; 
+    color: #fff;
+}
+
+#showForm {
+    float: right;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form-container .show {
+    opacity: 1; /* Make the form container fully opaque when it is displayed */
+  }
+
+  #showForm:hover {
+    background-color: #45a049;
+}
+
+
+/* 娛樂小表單的樣式 */
+.popup-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 4;
+    transition: opacity 0.3s ease-in; /* Add a transition for the ease-in effect */
+    border: 2px solid #de8e8e; /* Add a 2px solid border with color #ccc */
+
+}
+
+.popup-form h2 {
+    margin: 0; /* 去除預設的margin */
+    text-align: center; /* 文字置中 */
+}
